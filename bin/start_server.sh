@@ -1,0 +1,1 @@
+uvicorn code_quality_inspector.app.main:app --reload

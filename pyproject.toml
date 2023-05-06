@@ -1,0 +1,28 @@
+[tool.poetry]
+name = "code-quality-inspector"
+version = "0.1.0"
+description = ""
+authors = ["Zoltan Dominguez <zoltan.dominguez@gmail.com>"]
+readme = "README.md"
+packages = [{include = "code_quality_inspector"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+fastapi = "~0.95.1"
+httpx = "*"
+uvicorn = "~0.22.0"
+xmltodict = "~0.13.0"
+boto3 = ">=1.26.129"
+botocore = "*"
+PyGithub = "~1.58.1"
+tomli = "~2.0.1"
+
+[tool.poetry.dev-dependencies]
+black = "*"
+isort = "*"
+pytest = "*"
+pytest-cov = "*"
+pytest-html = "*"
+pytest-random-order = "*"
+requests = "*"
+coverage = "*"
