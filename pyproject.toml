@@ -20,6 +20,8 @@ tomli = "~2.0.1"
 [tool.poetry.dev-dependencies]
 black = "*"
 isort = "*"
+pylint = "*"
+
 pytest = "*"
 pytest-cov = "*"
 pytest-html = "*"
