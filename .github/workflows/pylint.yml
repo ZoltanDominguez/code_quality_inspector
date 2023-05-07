@@ -8,7 +8,6 @@ env:
 
 jobs:
   run_pylint:
-    name: Running pylint
     runs-on: ubuntu-latest
     steps:
     - name: Checkout

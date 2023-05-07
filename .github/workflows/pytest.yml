@@ -1,4 +1,4 @@
-name: Pylint
+name: Pytest
 
 on: [push]
 
@@ -8,7 +8,6 @@ env:
 
 jobs:
   run_pytest:
-    name: Running pytest
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
