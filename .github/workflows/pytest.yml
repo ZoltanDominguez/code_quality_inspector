@@ -19,5 +19,5 @@ jobs:
         python-version: ${{ env.PYTHON_VERSION }}
         poetry-version: ${{ env.POETRY_VERSION }}
     - name: Running pytest
-        run: |
-          pylint $(git ls-files '*.py')
+      run: |
+        bin/run_tests.sh
