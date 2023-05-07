@@ -18,5 +18,4 @@ jobs:
         python-version: ${{ env.PYTHON_VERSION }}
         poetry-version: ${{ env.POETRY_VERSION }}
     - name: Running pytest
-      run: ./bin/run_tests.sh
-      shell: bash
+      run: poetry run bash ./bin/run_tests.sh
