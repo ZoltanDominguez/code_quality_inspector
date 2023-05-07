@@ -10,6 +10,8 @@ jobs:
   pytest:
     runs-on: ubuntu-latest
     steps:
+    - name: Checkout
+      uses: actions/checkout@v3
     - name: Set up Python and poetry ${{ env.PYTHON_VERSION }}
       uses: ./.github/actions/setup-python-poetry
       with:
