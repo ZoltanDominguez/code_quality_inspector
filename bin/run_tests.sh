@@ -17,3 +17,8 @@ then
   COVERAGE_EXIT_CODE=$?
   echo "Coverage exit code for tests: " $COVERAGE_EXIT_CODE
 fi
+
+if  [ $COVERAGE_EXIT_CODE -ne 0 ] || \
+    [ $TESTS_EXIT_CODE -ne 0 ]; then
+    exit 1
+fi
