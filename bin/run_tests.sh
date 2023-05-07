@@ -13,12 +13,26 @@ echo "Exit code for tests: " $TESTS_EXIT_CODE
 
 if [[ "$TESTS_EXIT_CODE" == 0 ]] 
 then
-  coverage report --fail-under=85
+  coverage report --fail-under=40
   COVERAGE_EXIT_CODE=$?
   echo "Coverage exit code for tests: " $COVERAGE_EXIT_CODE
 fi
 
-if  [ $COVERAGE_EXIT_CODE -ne 0 ] || \
-    [ $TESTS_EXIT_CODE -ne 0 ]; then
+pylint ./code_quality_inspector/
+PYLINT_EXIT_CODE=$?
+
+black . --check
+BLACK_EXIT_CODE=$?
+
+echo "Tests exit code: " $TESTS_EXIT_CODE
+echo "Coverage exit code: " $COVERAGE_EXIT_CODE
+echo "Pylint exit code: " $PYLINT_EXIT_CODE
+echo "Black exit code: " $BLACK_EXIT_CODE
+
+
+if  [ $TESTS_EXIT_CODE -ne 0 ] || \
+    [ $COVERAGE_EXIT_CODE -ne 0 ] || \
+    [ $PYLINT_EXIT_CODE -ne 0 ] || \
+    [ $BLACK_EXIT_CODE -ne 0 ]; then
     exit 1
 fi

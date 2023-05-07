@@ -7,7 +7,7 @@ env:
   POETRY_VERSION: "1.3.2"
 
 jobs:
-  pytest:
+  test:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
@@ -17,19 +17,5 @@ jobs:
       with:
         python-version: ${{ env.PYTHON_VERSION }}
         poetry-version: ${{ env.POETRY_VERSION }}
-    - name: Pytest
+    - name: Tests
       run: poetry run bash ./bin/run_tests.sh
-  pylint:
-    if: ${{ always() }}
-    needs: pytest
-    runs-on: ubuntu-latest
-    steps:
-    - name: Pylint
-      run: poetry run pylint $(git ls-files '*.py')    
-  black:
-    if: ${{ always() }}
-    needs: pytest
-    runs-on: ubuntu-latest
-    steps:
-      - name: Black
-        run: poetry run black . --check
