@@ -4,7 +4,9 @@ from github.PullRequest import PullRequest
 
 from code_quality_inspector.github_connector.github_init import GITHUB
 
-GITHUB_USER_NAME = GITHUB.get_user().name
+
+def get_user_name():
+    return GITHUB.get_user().name
 
 
 def get_pull_request(pr_id: int, repo_full_name: str) -> PullRequest:

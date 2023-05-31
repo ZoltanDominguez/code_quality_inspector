@@ -4,10 +4,10 @@ from github.IssueComment import IssueComment
 from github.PullRequest import PullRequest
 
 from code_quality_inspector.github_connector.github_utils import (
-    GITHUB_USER_NAME,
     append_timestamp,
     create_new_comment,
     get_pull_request,
+    get_user_name,
 )
 from code_quality_inspector.log import get_logger
 
@@ -37,7 +37,7 @@ def get_comments_created_by_this_user(
 ) -> List[IssueComment]:
     comments_created_by_this_user = []
     for comment in comments:
-        if comment.user.name == GITHUB_USER_NAME:
+        if comment.user.name == get_user_name():
             logger.info(
                 msg=f"Found previous comment: "
                 f"{comment.created_at}, {comment.user.login}, {comment.body}"
