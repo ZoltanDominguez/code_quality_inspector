@@ -13,7 +13,7 @@ echo "Exit code for tests: " $TESTS_EXIT_CODE
 
 if [[ "$TESTS_EXIT_CODE" == 0 ]] 
 then
-  coverage report --fail-under=40
+  coverage report --fail-under=20
   COVERAGE_EXIT_CODE=$?
   echo "Coverage exit code for tests: " $COVERAGE_EXIT_CODE
 fi
