@@ -1,0 +1,69 @@
+from dataclasses import dataclass
+
+import boto3
+from botocore import exceptions
+
+from code_quality_inspector.app.errors import (
+    GenericDatabaseError,
+    ItemNotFoundInDatabase,
+)
+from code_quality_inspector.config.config import config
+from code_quality_inspector.log import get_logger
+
+logger = get_logger(__name__)
+
+
+def parse_dict_to_dynamo_item(dictionary: dict):
+    if isinstance(dictionary, dict):
+        _return = {}
+        for key, value in dictionary.items():
+            if isinstance(value, float):
+                _return[key] = str(value)
+            elif isinstance(value, dict):
+                _return[key] = parse_dict_to_dynamo_item(value)
+            else:
+                _return[key] = value
+        return _return
+    return dictionary
+
+
+@dataclass
+class DBSchemaNames:
+    project: str = "project_name"
+    branch: str = "branch_name"
+    commit_hash: str = "commit_hash"
+    coverage: str = "coverage"
+
+
+class DBClient:
+    """DynamoDB client for putting and getting data from the AWS DB instance"""
+
+    def __init__(self):
+        logger.info("DynamoDB table name: %s", config.db.table_name)
+        self.table = boto3.resource("dynamodb").Table(config.db.table_name)
+
+    def put_report(self, report: dict):
+        """Creates or updates a report"""
+        item = parse_dict_to_dynamo_item(dictionary=report)
+        self.table.put_item(Item=item)
+
+    def get_report(self, project: str, branch: str) -> dict:
+        try:
+            response = self.table.get_item(
+                Key={DBSchemaNames.project: project, DBSchemaNames.branch: branch}
+            )
+            return response["Item"]
+        except exceptions.ClientError as exc:
+            logger.error(
+                f"Failed to get {project}/{branch} data from Dynamo due to {exc}"
+            )
+            raise GenericDatabaseError from exc
+        except KeyError as exc:
+            logger.warning(
+                f"Entry with keys: {project=}, {branch=} not found in DynamoDB",
+            )
+            raise ItemNotFoundInDatabase from exc
+
+
+def get_db_connector():
+    return DBClient()

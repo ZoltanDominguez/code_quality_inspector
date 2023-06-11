@@ -10,6 +10,7 @@ packages = [{include = "code_quality_inspector"}]
 python = "^3.10"
 fastapi = "~0.95.1"
 httpx = "*"
+python-multipart = "*"
 uvicorn = "~0.22.0"
 xmltodict = "~0.13.0"
 boto3 = ">=1.26.129"

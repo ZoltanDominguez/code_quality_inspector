@@ -1,21 +1,17 @@
-from pathlib import Path
-
-from fastapi import FastAPI
-from starlette.testclient import TestClient
-
-from code_quality_inspector.app.coverage_router import coverage_router
 from code_quality_inspector.app.endpoints import COVERAGE_ENDPOINT
 
-APP_ROOT_DIR = Path(__file__).parent.parent.parent.resolve()
+GIT_HASH = "test_git_hash_12345"
+GIT_BRANCH = "main"
 
 
-def test_ep_with_test_client():
+def test_ep_with_test_client(fast_api_client, main_coverage):
     """Test stub using test client"""
-    app = FastAPI(debug=False)
-    app.include_router(coverage_router)
-    fast_api_client = TestClient(app)
-
-    response = fast_api_client.post(COVERAGE_ENDPOINT)
+    data = {
+        "revision_hash": GIT_HASH,
+        "branch": GIT_BRANCH,
+    }
+    url = COVERAGE_ENDPOINT + "/testproject/unittest"
+    response = fast_api_client.post(url=url, data=data, files={"file": main_coverage})
     print(response.json())
     expected_code = 200
     assert (

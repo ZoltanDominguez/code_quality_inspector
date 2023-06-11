@@ -1,2 +1,4 @@
 [main]
-"log_level" = "INFO"
+
+[db]
+table_name = "CQI_reports"
