@@ -1,4 +1,7 @@
 #!/usr/bin/env bash
+
+MIN_TEST_COVERAGE=40
+
 coverage erase
 pytest ./tests/ \
        -vv --random-order \
@@ -13,26 +16,35 @@ echo "Exit code for tests: " $TESTS_EXIT_CODE
 
 if [[ "$TESTS_EXIT_CODE" == 0 ]] 
 then
-  coverage report --fail-under=20
+  coverage report --fail-under=$MIN_TEST_COVERAGE
   COVERAGE_EXIT_CODE=$?
   echo "Coverage exit code for tests: " $COVERAGE_EXIT_CODE
 fi
 
+echo "Running pylint:"
 pylint ./code_quality_inspector/
 PYLINT_EXIT_CODE=$?
 
+echo "Running ruff:"
+ruff check code_quality_inspector/
+RUFF_EXIT_CODE=$?
+
+echo "Running black:"
 black . --check
 BLACK_EXIT_CODE=$?
 
+echo "Summary:"
 echo "Tests exit code: " $TESTS_EXIT_CODE
 echo "Coverage exit code: " $COVERAGE_EXIT_CODE
 echo "Pylint exit code: " $PYLINT_EXIT_CODE
+echo "Ruff exit code: " $RUFF_EXIT_CODE
 echo "Black exit code: " $BLACK_EXIT_CODE
 
 
 if  [ $TESTS_EXIT_CODE -ne 0 ] || \
     [ $COVERAGE_EXIT_CODE -ne 0 ] || \
     [ $PYLINT_EXIT_CODE -ne 0 ] || \
+    [ $RUFF_EXIT_CODE -ne 0 ] || \
     [ $BLACK_EXIT_CODE -ne 0 ]; then
     exit 1
 fi

@@ -1,3 +1,9 @@
+[tool.ruff]
+# Enable flake8-bugbear (`B`) rules.
+select = ["E", "F", "B"]
+[tool.ruff.flake8-bugbear]
+extend-immutable-calls = ["fastapi.Depends", "fastapi.Path", "fastapi.Form", "fastapi.File"]
+
 [tool.poetry]
 name = "code-quality-inspector"
 version = "0.1.0"
@@ -22,6 +28,7 @@ tomli = "~2.0.1"
 black = "*"
 isort = "*"
 pylint = "*"
+ruff = "*"
 
 pytest = "*"
 pytest-cov = "*"
