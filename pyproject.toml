@@ -44,6 +44,8 @@ pylint = "*"
 ruff = "*"
 semgrep = "*"
 mypy = "*"
+types-boto3 = "*"
+boto3-stubs-lite = { version = "*", extras = ["dynamodb"] }
 
 pytest = "*"
 pytest-cov = "*"

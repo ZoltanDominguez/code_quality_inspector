@@ -21,7 +21,7 @@ class Config(BaseModel):
     db: DBConfig
 
 
-def read_config(config_path: str = str(CONFIG_PATH)):
+def read_config(config_path: str = str(CONFIG_PATH)) -> Config:
     with open(config_path, "rb") as f:
         toml_dict = tomli.load(f)
         return Config.parse_obj(toml_dict)

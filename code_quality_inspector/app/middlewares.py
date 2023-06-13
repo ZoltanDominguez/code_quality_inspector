@@ -1,4 +1,4 @@
-import logging
+from logging import INFO, Logger
 
 from starlette.datastructures import MutableHeaders
 from starlette.types import ASGIApp, Message, Receive, Scope, Send
@@ -10,7 +10,7 @@ class LoggerMiddleware:  # pylint: disable=too-few-public-methods
     def __init__(
         self,
         app: ASGIApp,
-        logger,
+        logger: Logger,
     ) -> None:
         self.app = app
         self.logger = logger
@@ -22,7 +22,7 @@ class LoggerMiddleware:  # pylint: disable=too-few-public-methods
 
         async def handle_outgoing_request(message: Message) -> None:
             if (
-                self.logger.isEnabledFor(logging.INFO)
+                self.logger.isEnabledFor(INFO)
                 and message["type"] == "http.response.start"
             ):
                 response_headers = MutableHeaders(scope=message)

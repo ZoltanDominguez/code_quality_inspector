@@ -5,7 +5,7 @@ from github.PullRequest import PullRequest
 from code_quality_inspector.github_connector.github_init import GITHUB
 
 
-def get_user_name():
+def get_user_name() -> str:
     return GITHUB.get_user().name
 
 
@@ -19,5 +19,5 @@ def append_timestamp(content: str) -> str:
     return f"{datetime.datetime.now().strftime('%Y.%m.%d %H:%M:%S')}\n\n{content}"
 
 
-def create_new_comment(pr: PullRequest, content: str):
+def create_new_comment(pr: PullRequest, content: str) -> None:
     pr.create_issue_comment(content)

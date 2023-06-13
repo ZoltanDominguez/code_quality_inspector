@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from typing import Any
 
 import boto3
 from botocore import exceptions
@@ -13,9 +14,9 @@ from code_quality_inspector.log import get_logger
 logger = get_logger(__name__)
 
 
-def parse_dict_to_dynamo_item(dictionary: dict):
+def parse_dict_to_dynamo_item(dictionary: dict[Any, Any]) -> dict[Any, Any]:
     if isinstance(dictionary, dict):
-        _return = {}
+        _return: dict[Any, Any] = {}
         for key, value in dictionary.items():
             if isinstance(value, float):
                 _return[key] = str(value)
@@ -38,16 +39,16 @@ class DBSchemaNames:
 class DBClient:
     """DynamoDB client for putting and getting data from the AWS DB instance"""
 
-    def __init__(self):
+    def __init__(self) -> None:
         logger.info("DynamoDB table name: %s", config.db.table_name)
         self.table = boto3.resource("dynamodb").Table(config.db.table_name)
 
-    def put_report(self, report: dict):
+    def put_report(self, report: dict[Any, Any]) -> None:
         """Creates or updates a report"""
         item = parse_dict_to_dynamo_item(dictionary=report)
         self.table.put_item(Item=item)
 
-    def get_report(self, project: str, branch: str) -> dict:
+    def get_report(self, project: str, branch: str) -> Any:
         try:
             response = self.table.get_item(
                 Key={DBSchemaNames.project: project, DBSchemaNames.branch: branch}
@@ -65,5 +66,5 @@ class DBClient:
             raise ItemNotFoundInDatabase from exc
 
 
-def get_db_connector():
+def get_db_connector() -> DBClient:
     return DBClient()

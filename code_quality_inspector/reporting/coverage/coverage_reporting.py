@@ -11,6 +11,7 @@ class CoverageReporting(ReportingInterface):
     @staticmethod
     def generate_upload_data(reporting_input: InputReporting) -> StoredReporting:
         """Parsing from raw coverage file to CoverageModel"""
+        raise NotImplementedError
 
     @staticmethod
     def generate_diff_message(target: StoredReporting, source: StoredReporting) -> str:
@@ -18,3 +19,4 @@ class CoverageReporting(ReportingInterface):
         Parsing from 2 serialized CoverageModels in StoredReporting.
         Create diff message from the 2 CoverageModels.
         """
+        raise NotImplementedError

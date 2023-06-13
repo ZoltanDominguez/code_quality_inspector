@@ -1,6 +1,7 @@
 from typing import List
 
 from github.IssueComment import IssueComment
+from github.PaginatedList import PaginatedList
 from github.PullRequest import PullRequest
 
 from code_quality_inspector.github_connector.github_utils import (
@@ -14,7 +15,7 @@ from code_quality_inspector.log import get_logger
 logger = get_logger(__name__)
 
 
-def comment_to_pr(repo_full_name: str, pr_id: int, content: str):
+def comment_to_pr(repo_full_name: str, pr_id: int, content: str) -> None:
     pr = get_pull_request(pr_id=pr_id, repo_full_name=repo_full_name)
     if pr.state != "open":
         logger.error(msg="Not commenting to PR that is not open.")
@@ -25,15 +26,15 @@ def comment_to_pr(repo_full_name: str, pr_id: int, content: str):
     delete_older_comments_by_current_user(pr)
 
 
-def delete_older_comments_by_current_user(pr: PullRequest):
+def delete_older_comments_by_current_user(pr: PullRequest) -> None:
     comments = pr.get_issue_comments()
-    comments_created_by_this_user = get_comments_created_by_this_user(comments)
+    comments_created_by_this_user = get_comments_created_by_this_user(comments=comments)
     for comment in get_comments_to_delete(comments_created_by_this_user):
         comment.delete()
 
 
 def get_comments_created_by_this_user(
-    comments: List[IssueComment],
+    comments: PaginatedList,  # type: ignore
 ) -> List[IssueComment]:
     comments_created_by_this_user = []
     for comment in comments:

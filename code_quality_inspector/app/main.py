@@ -16,6 +16,6 @@ app.add_middleware(LoggerMiddleware, logger=logger)
 
 
 @app.exception_handler(CQIBaseException)
-async def api_exception_handler(_: Request, exc: CQIBaseException):
+async def api_exception_handler(_: Request, exc: CQIBaseException) -> JSONResponse:
     logger.error("Exception happened. %s is: %s", exc.__class__.__name__, str(exc))
     return JSONResponse(status_code=422, content=exc.api_error)
