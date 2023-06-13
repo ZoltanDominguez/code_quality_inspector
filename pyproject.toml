@@ -1,8 +1,21 @@
 [tool.ruff]
 # Enable flake8-bugbear (`B`) rules.
-select = ["E", "F", "B"]
+select = [
+    "E",  # pycodestyle errors
+    "F",  # pyflakes
+    "I",  # isort
+    "B",  # flake8-bugbear
+]
 [tool.ruff.flake8-bugbear]
-extend-immutable-calls = ["fastapi.Depends", "fastapi.Path", "fastapi.Form", "fastapi.File"]
+extend-immutable-calls = [
+    "fastapi.Depends",
+    "fastapi.Path",
+    "fastapi.Form",
+    "fastapi.File"
+]
+
+[tool.mypy]
+strict = true
 
 [tool.poetry]
 name = "code-quality-inspector"
@@ -29,6 +42,8 @@ black = "*"
 isort = "*"
 pylint = "*"
 ruff = "*"
+semgrep = "*"
+mypy = "*"
 
 pytest = "*"
 pytest-cov = "*"
