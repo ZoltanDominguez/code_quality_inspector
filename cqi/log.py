@@ -1,10 +1,10 @@
 import logging
 
-from cqi.config.config import config
+from cqi.config.config import app_config
 
 logging.basicConfig(
     format="%(levelname)-9s %(module)s: %(message)s",
-    level=config.main.log_level,
+    level=app_config.main.log_level,
 )
 
 

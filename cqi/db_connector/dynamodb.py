@@ -8,7 +8,7 @@ from cqi.app.errors import (
     GenericDatabaseError,
     ItemNotFoundInDatabase,
 )
-from cqi.config.config import config
+from cqi.config.config import app_config
 from cqi.log import get_logger
 
 logger = get_logger(__name__)
@@ -40,8 +40,8 @@ class DBClient:
     """DynamoDB client for putting and getting data from the AWS DB instance"""
 
     def __init__(self) -> None:
-        logger.info("DynamoDB table name: %s", config.db.table_name)
-        self.table = boto3.resource("dynamodb").Table(config.db.table_name)
+        logger.info("DynamoDB table name: %s", app_config.db.table_name)
+        self.table = boto3.resource("dynamodb").Table(app_config.db.table_name)
 
     def put_report(self, report: dict[Any, Any]) -> None:
         """Creates or updates a report"""

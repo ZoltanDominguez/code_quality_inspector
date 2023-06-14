@@ -27,4 +27,4 @@ def read_config(config_path: str = str(CONFIG_PATH)) -> Config:
         return Config.parse_obj(toml_dict)
 
 
-config = read_config()
+app_config = read_config()
