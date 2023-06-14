@@ -1,9 +1,9 @@
 from typing import Any, Optional
 
-from code_quality_inspector.reporting.coverage.data_model.coverage_file_model import (
+from cqi.reporting.coverage.data_model.coverage_file_model import (
     FileCoverage,
 )
-from code_quality_inspector.reporting.coverage.data_model.coverage_model import (
+from cqi.reporting.coverage.data_model.coverage_model import (
     FileCoverages,
 )
 

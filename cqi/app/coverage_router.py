@@ -2,18 +2,18 @@ from dataclasses import asdict
 
 from fastapi import APIRouter, Depends, File, Form, Path, Response, UploadFile, status
 
-from code_quality_inspector.app.endpoints import COVERAGE_ENDPOINT
-from code_quality_inspector.app.errors import FileNotPresent, ItemNotFoundInDatabase
-from code_quality_inspector.db_connector.dynamodb import (
+from cqi.app.endpoints import COVERAGE_ENDPOINT
+from cqi.app.errors import FileNotPresent, ItemNotFoundInDatabase
+from cqi.db_connector.dynamodb import (
     DBClient,
     DBSchemaNames,
     get_db_connector,
 )
-from code_quality_inspector.log import get_logger
-from code_quality_inspector.reporting.coverage.coverage_reporting import (
+from cqi.log import get_logger
+from cqi.reporting.coverage.coverage_reporting import (
     CoverageReporting,
 )
-from code_quality_inspector.reporting.report_interface import InputReporting
+from cqi.reporting.report_interface import InputReporting
 
 coverage_router = APIRouter()
 logger = get_logger(__name__)

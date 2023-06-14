@@ -2,7 +2,7 @@ import datetime
 
 from github.PullRequest import PullRequest
 
-from code_quality_inspector.github_connector.github_init import GITHUB
+from cqi.github_connector.github_init import GITHUB
 
 
 def get_user_name() -> str:

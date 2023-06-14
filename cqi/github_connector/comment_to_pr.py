@@ -4,13 +4,13 @@ from github.IssueComment import IssueComment
 from github.PaginatedList import PaginatedList
 from github.PullRequest import PullRequest
 
-from code_quality_inspector.github_connector.github_utils import (
+from cqi.github_connector.github_utils import (
     append_timestamp,
     create_new_comment,
     get_pull_request,
     get_user_name,
 )
-from code_quality_inspector.log import get_logger
+from cqi.log import get_logger
 
 logger = get_logger(__name__)
 

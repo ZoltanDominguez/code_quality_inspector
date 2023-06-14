@@ -1,11 +1,11 @@
 from fastapi import FastAPI, Request
 from starlette.responses import JSONResponse
 
-from code_quality_inspector.app.coverage_router import coverage_router
-from code_quality_inspector.app.errors import CQIBaseException
-from code_quality_inspector.app.middlewares import LoggerMiddleware
-from code_quality_inspector.app.webhook_router import github_webhook_router
-from code_quality_inspector.log import get_logger
+from cqi.app.coverage_router import coverage_router
+from cqi.app.errors import CQIBaseException
+from cqi.app.middlewares import LoggerMiddleware
+from cqi.app.webhook_router import github_webhook_router
+from cqi.log import get_logger
 
 logger = get_logger(name="main")
 

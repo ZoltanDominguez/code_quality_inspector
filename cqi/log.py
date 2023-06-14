@@ -1,6 +1,6 @@
 import logging
 
-from code_quality_inspector.config.config import config
+from cqi.config.config import config
 
 logging.basicConfig(
     format="%(levelname)-9s %(module)s: %(message)s",

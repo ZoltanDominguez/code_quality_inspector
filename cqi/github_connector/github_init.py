@@ -2,7 +2,7 @@ import os
 
 from github import Github
 
-from code_quality_inspector.log import get_logger
+from cqi.log import get_logger
 
 logger = get_logger(__name__)
 

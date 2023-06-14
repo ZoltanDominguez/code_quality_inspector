@@ -1,7 +1,7 @@
 from datetime import datetime
 from unittest.mock import Mock
 
-from code_quality_inspector.github_connector.comment_to_pr import get_comments_to_delete
+from cqi.github_connector.comment_to_pr import get_comments_to_delete
 
 
 def test_comment_deletion_based_on_datetime():

@@ -1,6 +1,5 @@
 import pytest
-
-from code_quality_inspector.app.endpoints import COVERAGE_ENDPOINT
+from cqi.app.endpoints import COVERAGE_ENDPOINT
 
 GIT_HASH = "test_git_hash_12345"
 GIT_BRANCH = "main"

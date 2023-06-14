@@ -2,16 +2,16 @@ from dataclasses import asdict
 
 import xmltodict
 
-from code_quality_inspector.reporting.coverage.coverage_parser import (
+from cqi.reporting.coverage.coverage_parser import (
     get_file_coverages,
     parse_float,
     parse_int,
 )
-from code_quality_inspector.reporting.coverage.data_model import (
+from cqi.reporting.coverage.data_model import (
     CoverageData,
     CoverageModel,
 )
-from code_quality_inspector.reporting.report_interface import (
+from cqi.reporting.report_interface import (
     InputReporting,
     ReportingInterface,
     StoredReporting,

@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from typing import Dict
 
-from code_quality_inspector.reporting.coverage.data_model.coverage_file_model import (
+from cqi.reporting.coverage.data_model.coverage_file_model import (
     FileCoverage,
 )
 

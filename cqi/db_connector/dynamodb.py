@@ -4,12 +4,12 @@ from typing import Any
 import boto3
 from botocore import exceptions
 
-from code_quality_inspector.app.errors import (
+from cqi.app.errors import (
     GenericDatabaseError,
     ItemNotFoundInDatabase,
 )
-from code_quality_inspector.config.config import config
-from code_quality_inspector.log import get_logger
+from cqi.config.config import config
+from cqi.log import get_logger
 
 logger = get_logger(__name__)
 

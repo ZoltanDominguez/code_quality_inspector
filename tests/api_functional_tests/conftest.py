@@ -4,9 +4,9 @@ from unittest.mock import Mock
 import pytest
 from starlette.testclient import TestClient
 
-from code_quality_inspector.app.coverage_router import coverage_router
-from code_quality_inspector.app.main import app
-from code_quality_inspector.db_connector.dynamodb import DBClient, get_db_connector
+from cqi.app.coverage_router import coverage_router
+from cqi.app.main import app
+from cqi.db_connector.dynamodb import DBClient, get_db_connector
 
 APP_ROOT_DIR = Path(__file__).parent.parent.parent.resolve()
 DATA_FOLDER = APP_ROOT_DIR.joinpath("tests", "api_functional_tests", "data")
