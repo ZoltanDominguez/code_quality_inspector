@@ -9,7 +9,7 @@ from pathlib import Path
 from cqi.app.main import app
 
 HTML_TEMPLATE = """<!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <title>My Project - ReDoc</title>
@@ -26,7 +26,8 @@ HTML_TEMPLATE = """<!DOCTYPE html>
 </head>
 <body>
     <div id="redoc-container"></div>
-    <script src="https://cdn.jsdelivr.net/npm/redoc/bundles/redoc.standalone.js"> </script>
+    <script src="https://cdn.jsdelivr.net/npm/redoc/bundles/redoc.standalone.js"> 
+    </script>
     <script>
         var spec = %s;
         Redoc.init(spec, {}, document.getElementById("redoc-container"));
@@ -37,6 +38,6 @@ HTML_TEMPLATE = """<!DOCTYPE html>
 
 if __name__ == "__main__":
     APP_ROOT_DIR = Path(__file__).parent.parent.resolve()
-    TARGET_PATH = APP_ROOT_DIR.joinpath("api_docs.html")
+    TARGET_PATH = APP_ROOT_DIR.joinpath("index.html")
     with open(TARGET_PATH, "w", encoding="utf-8") as fd:
         print(HTML_TEMPLATE % json.dumps(app.openapi()), file=fd)
