@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <title>My Project - ReDoc</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="https://fastapi.tiangolo.com/img/favicon.png">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+    <style data-styled="" data-styled-version="4.4.1"></style>
+</head>
+<body>
+    <div id="redoc-container"></div>
+    <script src="https://cdn.jsdelivr.net/npm/redoc/bundles/redoc.standalone.js"> </script>
+    <script>
+        var spec = {"openapi": "3.0.2", "info": {"title": "FastAPI", "version": "0.1.0"}, "paths": {"/reporting/coverage/{project_name}/{test_name}": {"post": {"summary": "Coverage Reports", "description": "Upload coverage report here.", "operationId": "coverage_reports_reporting_coverage__project_name___test_name__post", "parameters": [{"description": "Name of the project", "required": true, "schema": {"title": "Project Name", "minLength": 3, "type": "string", "description": "Name of the project"}, "name": "project_name", "in": "path"}, {"description": "Name of the test ex.: unit, functional, etc.", "required": true, "schema": {"title": "Test Name", "minLength": 3, "type": "string", "description": "Name of the test ex.: unit, functional, etc."}, "name": "test_name", "in": "path"}], "requestBody": {"content": {"multipart/form-data": {"schema": {"$ref": "#/components/schemas/Body_coverage_reports_reporting_coverage__project_name___test_name__post"}}}, "required": true}, "responses": {"200": {"description": "Successful Response", "content": {"application/json": {"schema": {}}}}, "422": {"description": "Validation Error", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/HTTPValidationError"}}}}}}}, "/webhook/github": {"post": {"summary": "Reports", "operationId": "reports_webhook_github_post", "responses": {"200": {"description": "Successful Response", "content": {"application/json": {"schema": {}}}}}}}}, "components": {"schemas": {"Body_coverage_reports_reporting_coverage__project_name___test_name__post": {"title": "Body_coverage_reports_reporting_coverage__project_name___test_name__post", "required": ["file", "revision_hash", "branch"], "type": "object", "properties": {"file": {"title": "File", "type": "string", "description": "Coverage file in xml format.", "format": "binary"}, "revision_hash": {"title": "Revision Hash", "minLength": 3, "type": "string", "description": "Hash uniquely identifying revision"}, "branch": {"title": "Branch", "minLength": 3, "type": "string", "description": "Branch name"}}}, "HTTPValidationError": {"title": "HTTPValidationError", "type": "object", "properties": {"detail": {"title": "Detail", "type": "array", "items": {"$ref": "#/components/schemas/ValidationError"}}}}, "ValidationError": {"title": "ValidationError", "required": ["loc", "msg", "type"], "type": "object", "properties": {"loc": {"title": "Location", "type": "array", "items": {"anyOf": [{"type": "string"}, {"type": "integer"}]}}, "msg": {"title": "Message", "type": "string"}, "type": {"title": "Error Type", "type": "string"}}}}}};
+        Redoc.init(spec, {}, document.getElementById("redoc-container"));
+    </script>
+</body>
+</html>
+
