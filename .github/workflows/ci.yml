@@ -19,11 +19,11 @@ jobs:
         poetry-version: ${{ env.POETRY_VERSION }}
     - name: Tests
       run: poetry run bash ./bin/run_tests.sh
-    - name: Replacing API docs
+    - name: Updating API docs
       run: |
         poetry run python ./bin/export_api_docs.py
         git config user.name github-actions
         git config user.email github-actions@github.com
-        git add .
-        git commit -m "Replacing API docs Automation"
+        git add ./index.html
+        git commit -m "Updating API docs Automation"
         git push
