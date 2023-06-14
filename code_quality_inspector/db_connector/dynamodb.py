@@ -32,7 +32,7 @@ def parse_dict_to_dynamo_item(dictionary: dict[Any, Any]) -> dict[Any, Any]:
 class DBSchemaNames:
     project: str = "project_name"
     branch: str = "branch_name"
-    commit_hash: str = "commit_hash"
+    revision_hash: str = "revision_hash"
     coverage: str = "coverage"
 
 

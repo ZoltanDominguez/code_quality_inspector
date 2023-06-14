@@ -19,4 +19,4 @@ class CoverageData:
 class CoverageModel:
     overall_branch_coverage: CoverageData
     overall_line_coverage: CoverageData
-    coverages_per_file_: FileCoverages
+    coverages_per_file: FileCoverages

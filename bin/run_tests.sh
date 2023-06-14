@@ -2,6 +2,11 @@
 
 MIN_TEST_COVERAGE=40
 
+print_line()
+{
+    printf -- '-%.0s' {1..100}; echo ""
+}
+
 coverage erase
 pytest ./tests/ \
        -vv --random-order \
@@ -21,6 +26,7 @@ then
   echo "Coverage exit code for tests: " $COVERAGE_EXIT_CODE
 fi
 
+print_line
 echo "Running pylint:"
 pylint code_quality_inspector/;          PYLINT_EXIT_CODE=$?
 
@@ -28,16 +34,16 @@ echo "Running ruff:"
 ruff check code_quality_inspector/;      RUFF_EXIT_CODE=$?
 if [ $RUFF_EXIT_CODE -eq 0 ]; then echo "Ruff passed!"; fi
 
-echo "Running black:"
+print_line && echo "Running black:"
 black . --check;                         BLACK_EXIT_CODE=$?
 
-echo "Running semgrep:"
+print_line && echo "Running semgrep:"
 semgrep scan --config auto;              SEMGREP_EXIT_CODE=$?
 
-echo "Running mypy:"
+print_line && echo "Running mypy:"
 mypy code_quality_inspector/;            MYPY_EXIT_CODE=$?
 
-echo "Summary:"
+print_line && echo "Summary:"
 echo "Tests exit code: " $TESTS_EXIT_CODE
 echo "Coverage exit code: " $COVERAGE_EXIT_CODE
 echo "Pylint exit code: " $PYLINT_EXIT_CODE

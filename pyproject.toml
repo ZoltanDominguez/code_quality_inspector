@@ -27,7 +27,7 @@ packages = [{include = "code_quality_inspector"}]
 
 [tool.poetry.dependencies]
 python = "^3.10"
-fastapi = "~0.95.1"
+fastapi = "~0.97.0"
 httpx = "*"
 python-multipart = "*"
 uvicorn = "~0.22.0"
@@ -46,6 +46,7 @@ semgrep = "*"
 mypy = "*"
 types-boto3 = "*"
 boto3-stubs-lite = { version = "*", extras = ["dynamodb"] }
+types-xmltodict = "*"
 
 pytest = "*"
 pytest-cov = "*"

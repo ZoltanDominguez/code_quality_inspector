@@ -1,18 +1,20 @@
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
-from typing import Union
+from typing import Any, Dict, Union
+
+InputData = Union[str, bytes]
 
 
 @dataclass
 class InputReporting:
     branch_name: str
-    data: Union[str, bytes]
+    data: InputData
 
 
 @dataclass
 class StoredReporting:
     branch_name: str
-    data: Union[str, bytes]
+    data: Union[str, bytes, Dict[Any, Any]]
 
 
 class ReportingInterface(ABC):
