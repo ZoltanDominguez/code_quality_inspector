@@ -19,11 +19,11 @@ coverage_router = APIRouter()
 logger = get_logger(__name__)
 
 COVERAGE_DESC = """Upload coverage report here."""
-COVERAGE_FILE_DESC = "Coverage file in xml format."
+COVERAGE_FILE_DESC = "Coverage file in xml format uploaded as multipart/form-data."
 HASH_DESC = "Hash uniquely identifying revision"
 PROJECT_NAME_DESC = "Name of the project"
-TEST_NAME_DESC = "Name of the test ex.: unit, functional, etc."
-BRANCH_DESC = "Branch name"
+TEST_NAME_DESC = "Name of the test suite ex.: unit, functional, etc."
+BRANCH_DESC = "Branch name the report was generated from"
 
 
 # pylint: disable=R0913
