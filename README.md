@@ -14,4 +14,4 @@ bin/start_server.sh
 ```
 
 # Contributing
-For contributing see: [Contributing.md](./github/CONTRIBUTING.md)
+For contributing see: [Contributing.md](./.github/CONTRIBUTING.md)
