@@ -13,7 +13,7 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v3
       with:
-      persist-credentials: false
+        persist-credentials: false
     - name: CI - 0. Set up Python and poetry ${{ env.PYTHON_VERSION }}
       uses: ./.github/actions/setup-python-poetry
       with:
