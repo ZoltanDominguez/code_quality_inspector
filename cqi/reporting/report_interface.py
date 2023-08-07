@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
-from typing import Any, Dict, Union
+from typing import Any, Dict, Optional, Union
 
 InputData = Union[str, bytes]
 
@@ -9,12 +9,14 @@ InputData = Union[str, bytes]
 class InputReporting:
     branch_name: str
     data: InputData
+    type: Optional[str] = None
 
 
 @dataclass
 class StoredReporting:
-    branch_name: str
-    data: Union[str, bytes, Dict[Any, Any]]
+    """Structure stored in the database"""
+
+    data: Dict[Any, Any]
 
 
 class ReportingInterface(ABC):
@@ -22,6 +24,11 @@ class ReportingInterface(ABC):
     @abstractmethod
     def report_name(self) -> str:
         """Name of the report that will be displayed"""
+
+    @property
+    @abstractmethod
+    def report_db_key(self) -> str:
+        """Name of the Database key where the report will be stored"""
 
     @staticmethod
     @abstractmethod

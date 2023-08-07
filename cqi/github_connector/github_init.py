@@ -6,7 +6,9 @@ from cqi.log import get_logger
 
 logger = get_logger(__name__)
 
-GITHUB_TOKEN = os.environ.get("GITHUB_TOKEN")
-if not GITHUB_TOKEN:
-    logger.warning(msg="GITHUB_TOKEN is not found.")
-GITHUB = Github(login_or_token=GITHUB_TOKEN)
+
+def get_github_connection() -> Github:
+    github_token = os.environ.get("GITHUB_TOKEN")
+    if not github_token:
+        logger.warning(msg="GITHUB_TOKEN is not found.")
+    return Github(login_or_token=github_token)

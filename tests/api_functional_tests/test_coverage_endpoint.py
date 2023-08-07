@@ -2,20 +2,22 @@ import pytest
 
 from cqi.app.endpoints import COVERAGE_ENDPOINT
 from cqi.app.errors import FileIsEmpty
+from tests.common_asserts import assert_status_code
 
 GIT_HASH = "test_git_hash_12345"
 GIT_BRANCH = "main"
+PROJECT_NAME = "cqi_tests"
 
 
 @pytest.fixture(name="main_coverage_report_to_db")
 def main_coverage_report_to_db_fixture():
     return {
-        "revision_hash": "test_git_hash_12345",
-        "branch": "main",
+        "revision_hash": GIT_HASH,
+        "branch_name": GIT_BRANCH,
+        "project_name": PROJECT_NAME,
         "coverage": {
-            "unittest": {
-                "branch_name": "main",
-                "data": {
+            "data": {
+                "unittest": {
                     "overall_branch_coverage": {
                         "coverage": 19.23,
                         "valid": 26,
@@ -66,27 +68,35 @@ def test_ep_with_test_client(
         "revision_hash": GIT_HASH,
         "branch": GIT_BRANCH,
     }
-    url = COVERAGE_ENDPOINT + "/testproject/unittest"
+    url = COVERAGE_ENDPOINT + f"/{PROJECT_NAME}/unittest"
     response = fast_api_client.post(url=url, data=data, files={"file": main_coverage})
-    expected_code = 204
-    assert (
-        response.status_code == expected_code
-    ), f"Endpoint:{COVERAGE_ENDPOINT} not returned the {expected_code=}"
+    assert_status_code(response=response, expected_code=204)
     db_connector.put_report.assert_called_with(report=main_coverage_report_to_db)
 
 
-def test_no_file_present(
-    db_connector, fast_api_client, empty_coverage, main_coverage_report_to_db
-):
+def test_no_file_present(fast_api_client, empty_coverage):
     data = {
         "revision_hash": GIT_HASH,
         "branch": GIT_BRANCH,
     }
-    url = COVERAGE_ENDPOINT + "/testproject/unittest"
+    url = COVERAGE_ENDPOINT + f"/{PROJECT_NAME}/unittest"
     response = fast_api_client.post(url=url, data=data, files={"file": empty_coverage})
-    expected_code = 422
-    assert response.status_code == expected_code, (
-        f"Endpoint:{COVERAGE_ENDPOINT} not returned the {expected_code=}. "
-        f"{response.content=}"
-    )
+    assert_status_code(response=response, expected_code=422)
+
     assert response.json() == FileIsEmpty.api_error
+
+
+def test_item_not_found(
+    db_connector, fast_api_client, main_coverage, main_coverage_report_to_db
+):
+    branch_name = "item_not_found_test_branch"
+    data = {
+        "revision_hash": GIT_HASH,
+        "branch": branch_name,
+    }
+    url = COVERAGE_ENDPOINT + f"/{PROJECT_NAME}/unittest"
+    response = fast_api_client.post(url=url, data=data, files={"file": main_coverage})
+    assert_status_code(response=response, expected_code=204)
+
+    main_coverage_report_to_db["branch_name"] = branch_name
+    db_connector.put_report.assert_called_with(report=main_coverage_report_to_db)

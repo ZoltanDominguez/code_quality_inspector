@@ -18,18 +18,19 @@ logger = get_logger(__name__)
 def comment_to_pr(repo_full_name: str, pr_id: int, content: str) -> None:
     pr = get_pull_request(pr_id=pr_id, repo_full_name=repo_full_name)
     if pr.state != "open":
-        logger.error(msg="Not commenting to PR that is not open.")
+        logger.error("Not commenting to PR that is not open.")
         return
 
     content = append_timestamp(content)
+    logger.info("Creating GitHub Comment: %s", content)
     create_new_comment(pr, content=content)
-    delete_older_comments_by_current_user(pr)
+    delete_older_comments_by_current_user(pr=pr)
 
 
 def delete_older_comments_by_current_user(pr: PullRequest) -> None:
     comments = pr.get_issue_comments()
     comments_created_by_this_user = get_comments_created_by_this_user(comments=comments)
-    for comment in get_comments_to_delete(comments_created_by_this_user):
+    for comment in get_comments_to_delete(comments=comments_created_by_this_user):
         comment.delete()
 
 

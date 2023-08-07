@@ -1,11 +1,12 @@
 from dataclasses import dataclass
-from typing import Any
+from typing import Any, Dict
 
 import boto3
 from botocore import exceptions
 
 from cqi.app.errors import (
     GenericDatabaseError,
+    ItemNotDictionaryInDatabase,
     ItemNotFoundInDatabase,
 )
 from cqi.config.config import app_config
@@ -33,7 +34,6 @@ class DBSchemaNames:
     project: str = "project_name"
     branch: str = "branch_name"
     revision_hash: str = "revision_hash"
-    coverage: str = "coverage"
 
 
 class DBClient:
@@ -48,11 +48,13 @@ class DBClient:
         item = parse_dict_to_dynamo_item(dictionary=report)
         self.table.put_item(Item=item)
 
-    def get_report(self, project: str, branch: str) -> Any:
+    def get_report(self, project: str, branch: str) -> Dict[Any, Any]:
         try:
             response = self.table.get_item(
                 Key={DBSchemaNames.project: project, DBSchemaNames.branch: branch}
             )
+            if not isinstance(response["Item"], dict):
+                raise ItemNotDictionaryInDatabase
             return response["Item"]
         except exceptions.ClientError as exc:
             logger.error(

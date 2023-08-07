@@ -1,11 +1,16 @@
 [tool.ruff]
-# Enable flake8-bugbear (`B`) rules.
 select = [
     "E",  # pycodestyle errors
     "F",  # pyflakes
     "I",  # isort
     "B",  # flake8-bugbear
 ]
+
+# Allow autofix for all enabled rules (when `--fix`) is provided.
+fixable = ["ALL"]
+unfixable = ["F841"]
+
+
 [tool.ruff.flake8-bugbear]
 extend-immutable-calls = [
     "fastapi.Depends",
@@ -13,6 +18,7 @@ extend-immutable-calls = [
     "fastapi.Form",
     "fastapi.File"
 ]
+
 
 [tool.mypy]
 strict = true

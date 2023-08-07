@@ -1,9 +1,10 @@
 from dataclasses import asdict
+from typing import Any, Dict
 
 from fastapi import APIRouter, Depends, File, Form, Path, Response, UploadFile, status
 
 from cqi.app.endpoints import COVERAGE_ENDPOINT
-from cqi.app.errors import FileIsEmpty, FileNotPresent, ItemNotFoundInDatabase
+from cqi.app.errors import FileIsEmpty, ItemNotFoundInDatabase
 from cqi.db_connector.dynamodb import (
     DBClient,
     DBSchemaNames,
@@ -40,28 +41,37 @@ def coverage_reports(
     db_connector: DBClient = Depends(get_db_connector),
 ) -> Response:
     logger.info("Adding coverage for: %s-%s", project_name, branch)
-    try:
-        data = file.file.read()
-    except AttributeError as exc:
-        raise FileNotPresent from exc
+    data = file.file.read()
 
     if not data:
         raise FileIsEmpty
 
-    stored_report = CoverageReporting.generate_upload_data(
-        reporting_input=InputReporting(branch_name=branch, data=data)
+    reporting_class = CoverageReporting()
+    report_db_key = reporting_class.report_db_key
+    report_to_store = reporting_class.generate_upload_data(
+        reporting_input=InputReporting(branch_name=branch, data=data, type=test_name)
     )
+    db_record = get_db_record(
+        db_connector=db_connector, project_name=project_name, branch=branch
+    )
+
+    existing_report = db_record.get(report_db_key, {})
+    merged_report_to_store = existing_report | asdict(report_to_store)
+
+    db_record[report_db_key] = merged_report_to_store
+    db_record[DBSchemaNames.revision_hash] = revision_hash
+
+    db_connector.put_report(report=db_record)
+    return Response(status_code=status.HTTP_204_NO_CONTENT)
+
+
+def get_db_record(
+    db_connector: DBClient, project_name: str, branch: str
+) -> Dict[Any, Any]:
     try:
         db_record = db_connector.get_report(project=project_name, branch=branch)
         logger.info("Existing report found, updating it with coverage.")
     except ItemNotFoundInDatabase:
         logger.info("No existing report found, creating new.")
-        db_record = {}
-
-    report_name = DBSchemaNames.coverage
-    db_record[report_name] = db_record.get(report_name, {})
-    db_record[report_name][test_name] = asdict(stored_report)
-    db_record[DBSchemaNames.revision_hash] = revision_hash
-
-    db_connector.put_report(report=db_record)
-    return Response(status_code=status.HTTP_204_NO_CONTENT)
+        db_record = {DBSchemaNames.project: project_name, DBSchemaNames.branch: branch}
+    return db_record

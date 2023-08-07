@@ -1,9 +1,7 @@
 from typing import Any, Optional
 
-from cqi.reporting.coverage.data_model.coverage_file_model import (
-    FileCoverage,
-)
 from cqi.reporting.coverage.data_model.coverage_model import (
+    FileCoverage,
     FileCoverages,
 )
 
@@ -46,13 +44,13 @@ def append_class_object(
     class_object: XMLClassObjectT, file_coverages: FileCoverages
 ) -> None:
     try:
-        file_coverage = parse_class_object(class_object=class_object)
+        file_coverage = parse_to_file_coverage(class_object=class_object)
         file_coverages[file_coverage.filename] = file_coverage
     except ValueError:
         pass
 
 
-def parse_class_object(class_object: XMLClassObjectT) -> FileCoverage:
+def parse_to_file_coverage(class_object: XMLClassObjectT) -> FileCoverage:
     filename = class_object.get("@filename")
     line_rate = parse_float(class_object.get("@line-rate"))
     branch_rate = parse_float(class_object.get("@branch-rate"))

@@ -2,15 +2,15 @@ import datetime
 
 from github.PullRequest import PullRequest
 
-from cqi.github_connector.github_init import GITHUB
+from cqi.github_connector.github_init import get_github_connection
 
 
 def get_user_name() -> str:
-    return GITHUB.get_user().name
+    return get_github_connection().get_user().name
 
 
 def get_pull_request(pr_id: int, repo_full_name: str) -> PullRequest:
-    repo = GITHUB.get_repo(repo_full_name)
+    repo = get_github_connection().get_repo(repo_full_name)
     pr = repo.get_pull(pr_id)
     return pr
 
