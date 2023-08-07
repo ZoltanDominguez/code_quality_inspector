@@ -29,9 +29,9 @@ HTML_TEMPLATE = """<!DOCTYPE html>
 </head>
 <body>
     <div id="redoc-container"></div>
-    <script 
-    src="https://cdn.jsdelivr.net/npm/redoc/bundles/redoc.standalone.js" 
-    integrity="sha384-7tlX7/pVtXlXa8C4KtSgVzizyFulUwu7ODXGbKCbfmAk7cchPphAH7AYGvJMmh00" 
+    <script
+    src="https://cdn.jsdelivr.net/npm/redoc/bundles/redoc.standalone.js"
+    integrity="sha384-7tlX7/pVtXlXa8C4KtSgVzizyFulUwu7ODXGbKCbfmAk7cchPphAH7AYGvJMmh00"
     crossorigin="anonymous">
     </script>
     <script>
