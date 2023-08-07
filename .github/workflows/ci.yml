@@ -23,6 +23,9 @@ jobs:
       run: |
         poetry run python ./bin/export_api_docs.py
     - name: CI - 3. Pushing API docs changes
+      uses: actions/checkout@v3
+      with:
+      persist-credentials: false
       run: |  
         git config user.name github-actions
         git config user.email github-actions@github.com
