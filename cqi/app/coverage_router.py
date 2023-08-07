@@ -3,7 +3,7 @@ from dataclasses import asdict
 from fastapi import APIRouter, Depends, File, Form, Path, Response, UploadFile, status
 
 from cqi.app.endpoints import COVERAGE_ENDPOINT
-from cqi.app.errors import FileNotPresent, ItemNotFoundInDatabase
+from cqi.app.errors import FileIsEmpty, FileNotPresent, ItemNotFoundInDatabase
 from cqi.db_connector.dynamodb import (
     DBClient,
     DBSchemaNames,
@@ -44,6 +44,9 @@ def coverage_reports(
         data = file.file.read()
     except AttributeError as exc:
         raise FileNotPresent from exc
+
+    if not data:
+        raise FileIsEmpty
 
     stored_report = CoverageReporting.generate_upload_data(
         reporting_input=InputReporting(branch_name=branch, data=data)

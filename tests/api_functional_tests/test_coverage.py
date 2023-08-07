@@ -1,5 +1,7 @@
 import pytest
+
 from cqi.app.endpoints import COVERAGE_ENDPOINT
+from cqi.app.errors import FileIsEmpty
 
 GIT_HASH = "test_git_hash_12345"
 GIT_BRANCH = "main"
@@ -71,3 +73,20 @@ def test_ep_with_test_client(
         response.status_code == expected_code
     ), f"Endpoint:{COVERAGE_ENDPOINT} not returned the {expected_code=}"
     db_connector.put_report.assert_called_with(report=main_coverage_report_to_db)
+
+
+def test_no_file_present(
+    db_connector, fast_api_client, empty_coverage, main_coverage_report_to_db
+):
+    data = {
+        "revision_hash": GIT_HASH,
+        "branch": GIT_BRANCH,
+    }
+    url = COVERAGE_ENDPOINT + "/testproject/unittest"
+    response = fast_api_client.post(url=url, data=data, files={"file": empty_coverage})
+    expected_code = 422
+    assert response.status_code == expected_code, (
+        f"Endpoint:{COVERAGE_ENDPOINT} not returned the {expected_code=}. "
+        f"{response.content=}"
+    )
+    assert response.json() == FileIsEmpty.api_error

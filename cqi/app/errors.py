@@ -27,3 +27,7 @@ class ItemNotFoundInDatabase(GenericDatabaseError):
 # -------------------- Validity errors
 class FileNotPresent(CQIBaseException):
     api_error = Error(error_code=3001, error_message="File not present")
+
+
+class FileIsEmpty(CQIBaseException):
+    api_error = Error(error_code=3002, error_message="File is empty")
