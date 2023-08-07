@@ -12,16 +12,18 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v3
-    - name: Set up Python and poetry ${{ env.PYTHON_VERSION }}
+    - name: CI - 0. Set up Python and poetry ${{ env.PYTHON_VERSION }}
       uses: ./.github/actions/setup-python-poetry
       with:
         python-version: ${{ env.PYTHON_VERSION }}
         poetry-version: ${{ env.POETRY_VERSION }}
-    - name: Tests
+    - name: CI - 1. Running test suites
       run: poetry run bash ./bin/run_tests.sh
-    - name: Updating API docs
+    - name: CI - 2. Updating API docs
       run: |
         poetry run python ./bin/export_api_docs.py
+    - name: CI - 3. Pushing API docs changes
+      run: |  
         git config user.name github-actions
         git config user.email github-actions@github.com
         git add ./index.html
