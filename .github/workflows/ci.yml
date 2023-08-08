@@ -9,8 +9,6 @@ env:
 jobs:
   test:
     runs-on: ubuntu-latest
-    env:
-      GITHUB_TOKEN: ${{ secrets.ZD_PAT }}
     steps:
     - name: Checkout
       uses: actions/checkout@v3
@@ -23,7 +21,7 @@ jobs:
         poetry-version: ${{ env.POETRY_VERSION }}
     - name: CI - 1. Running test suites
       run: echo "Skipping tests for now" # poetry run bash ./bin/run_tests.sh
-    - name: CI - 2. Updating API docs
+    - name: CI - 2. Running export API docs
       id: export_api
       run: |
         set +e
@@ -31,14 +29,11 @@ jobs:
         git diff --quiet HEAD --
         CALL_DEPLOY="$?"
         echo "CALL_DEPLOY=$CALL_DEPLOY" >> $GITHUB_OUTPUT
-        echo "CALL_DEPLOY1=${{ steps.export_api.outputs.CALL_DEPLOY }}"
-    - name: CI - 2. Updating API docs ECHO
+    - name: CI - 3. Check if Updating API docs is needed
       run: |
         echo "CALL_DEPLOY=${{ steps.export_api.outputs.CALL_DEPLOY }}"
-    - name: CI - 3. Pushing API docs changes
-      if: steps.export_api.outputs.CALL_DEPLOY
-      env:
-        GITHUB_TOKEN: ${{ secrets.ZD_PAT }}
+    - name: CI - 4. Pushing API docs changes
+      if: steps.export_api.outputs.CALL_DEPLOY == 1
       run: |
         git config user.name github-actions
         git config user.email github-actions@github.com
