@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@v3 
     - name: CI - 0. Set up Python and poetry ${{ env.PYTHON_VERSION }}
       uses: ./.github/actions/setup-python-poetry
       with:
@@ -23,8 +23,13 @@ jobs:
       id: export_api
       run: |
         poetry run python ./bin/export_api_docs.py
+        echo "CALL_DEPLOY=$(git diff-index --quiet HEAD --)"
+        echo "CALL_DEPLOY2=$(git diff --quiet HEAD --)"
         echo "CALL_DEPLOY=$(git diff-index --quiet HEAD --)" >> "$GITHUB_OUTPUT"
-        echo "CALL_DEPLOY=${{ steps.export_api.outputs.CALL_DEPLOY }}"
+        echo "CALL_DEPLOY3=${{ steps.export_api.outputs.CALL_DEPLOY }}"
+    - name: CI - 2. Updating API docs ECHO
+      run: |
+        echo "CALL_DEPLOY4=${{ steps.export_api.outputs.CALL_DEPLOY }}"
     outputs:
       call_deploy: ${{ steps.export_api.outputs.CALL_DEPLOY }}
       
@@ -32,7 +37,7 @@ jobs:
     runs-on: ubuntu-latest
     needs:
       - test
-    if: needs.test.outputs.call_deploy == 1
+    if: needs.test.outputs.call_deploy
     steps:
     - name: Checkout
       uses: actions/checkout@v3
