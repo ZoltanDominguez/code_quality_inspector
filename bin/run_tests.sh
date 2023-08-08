@@ -37,7 +37,7 @@ print_line && echo "Running black:"
 black . --check;                                              BLACK_EXIT_CODE=$?
 
 print_line && echo "Running semgrep:"
-semgrep scan --config auto;                                   SEMGREP_EXIT_CODE=$?
+semgrep scan --config auto --verbose;                         SEMGREP_EXIT_CODE=$?
 
 print_line && echo "Running mypy:"
 mypy cqi/;                                                    MYPY_EXIT_CODE=$?
