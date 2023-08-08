@@ -22,17 +22,14 @@ jobs:
     - name: CI - 2. Updating API docs
       id: export_api
       run: |
+        set +e
         poetry run python ./bin/export_api_docs.py
-        git config user.name github-actions
-        git config user.email github-actions@github.com
-        git add ./index.html
-        echo "CALL_DEPLOY=$(git diff-index --quiet HEAD --)"
-        echo "CALL_DEPLOY2=$(git diff --quiet HEAD --)"
-        echo "CALL_DEPLOY=$(git diff-index --quiet HEAD --)" >> "$GITHUB_OUTPUT"
-        echo "CALL_DEPLOY3=${{ steps.export_api.outputs.CALL_DEPLOY }}"
+        git diff-index --quiet HEAD --
+        CALL_DEPLOY="$?"
+        echo "CALL_DEPLOY=$CALL_DEPLOY" >> $GITHUB_OUTPUT
     - name: CI - 2. Updating API docs ECHO
       run: |
-        echo "CALL_DEPLOY4=${{ steps.export_api.outputs.CALL_DEPLOY }}"
+        echo "CALL_DEPLOY=${{ steps.export_api.outputs.CALL_DEPLOY }}"
     outputs:
       call_deploy: ${{ steps.export_api.outputs.CALL_DEPLOY }}
       
@@ -46,5 +43,8 @@ jobs:
       uses: actions/checkout@v3
     - name: CI - 3. Pushing API docs changes
       run: |  
+        git config user.name github-actions
+        git config user.email github-actions@github.com
+        git add ./index.html
         git commit -m "Update API docs" || true
         git push || true
