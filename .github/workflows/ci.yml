@@ -28,9 +28,10 @@ jobs:
       run: |
         set +e
         poetry run python ./bin/export_api_docs.py
-        git diff-index --quiet HEAD --
+        git diff --quiet HEAD --
         CALL_DEPLOY="$?"
         echo "CALL_DEPLOY=$CALL_DEPLOY" >> $GITHUB_OUTPUT
+        echo "CALL_DEPLOY1=${{ steps.export_api.outputs.CALL_DEPLOY }}"
     - name: CI - 2. Updating API docs ECHO
       run: |
         echo "CALL_DEPLOY=${{ steps.export_api.outputs.CALL_DEPLOY }}"
