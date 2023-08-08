@@ -9,9 +9,13 @@ env:
 jobs:
   test:
     runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: ${{ secrets.ZD_PAT }}
     steps:
     - name: Checkout
-      uses: actions/checkout@v3 
+      uses: actions/checkout@v3
+      with:
+        persist-credentials: false
     - name: CI - 0. Set up Python and poetry ${{ env.PYTHON_VERSION }}
       uses: ./.github/actions/setup-python-poetry
       with:
@@ -30,19 +34,9 @@ jobs:
     - name: CI - 2. Updating API docs ECHO
       run: |
         echo "CALL_DEPLOY=${{ steps.export_api.outputs.CALL_DEPLOY }}"
-    outputs:
-      call_deploy: ${{ steps.export_api.outputs.CALL_DEPLOY }}
-      
-  push_api_docs:
-    runs-on: ubuntu-latest
-    needs:
-      - test
-    if: needs.test.outputs.call_deploy
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v3
     - name: CI - 3. Pushing API docs changes
-      run: |  
+      if: steps.export_api.outputs.CALL_DEPLOY
+      run: |
         git config user.name github-actions
         git config user.email github-actions@github.com
         git add ./index.html
