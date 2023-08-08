@@ -36,6 +36,8 @@ jobs:
         echo "CALL_DEPLOY=${{ steps.export_api.outputs.CALL_DEPLOY }}"
     - name: CI - 3. Pushing API docs changes
       if: steps.export_api.outputs.CALL_DEPLOY
+      env:
+        GITHUB_TOKEN: ${{ secrets.ZD_PAT }}
       run: |
         git config user.name github-actions
         git config user.email github-actions@github.com
